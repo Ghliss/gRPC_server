@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+option java_package ="ex.grpc";
+
+package serv;
+
+//My service
+
+service Mqttservices {
+
+rpc connect (conInfo) returns (conRes) {}
+
+rpc publish (pubInfo) returns (pubRes) {}
+
+rpc disconnect (disInfo) returns (disRes) {}
+
+rpc subscribe (subInfo) returns (subRes) {}
+
+}
+//the info message 
+
+message conInfo {
+
+string adr=1;
+
+string ID=2;
+
+}
+//the response message 
+
+message conRes {
+
+string response=1;
+
+}
+
+message pubInfo {
+
+string adr=1;
+string topic=2;
+string message=3;
+string ID=4;
+}
+
+message pubRes{
+
+string res=1;}
+
+message disInfo{
+
+string adr=1;
+string ID=2;
+}
+
+message disRes{
+
+string res=1;
+
+}
+
+message subInfo {
+
+string adr=1;
+
+string topic=2;
+
+string ID=3;
+}
+
+message subRes{
+
+string res=1;
+
+}
