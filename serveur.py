@@ -12,28 +12,31 @@ import serv_pb2
 import serv_pb2_grpc
 
 
-broker = 'broker.emqx.io'
+broker = 'temperature'
 
 port = 50051
 
 topic = "/python/mqtt"
 
 client_id =f'python-mqtt-{random.randint(0,100)}'
-username = 'emqx'
+username = 'user'
 password = 'public'
 
 class ServServs(serv_pb2_grpc.MqttservicesServicer):
+    
     def connect_mqtt() -> mqtt_client:
-        def on_connect(client,userdata,flags,rc):
-            if rc==0:
-                print("Connected to MQTT BROKER")
-            else:
-                print("Failed to connect %d",rc)
-        client=mqtt_client.Client(client_id)
-        client.username_pw_set(username,password)
-        client.on_connect = on_connect
-        client.connect(broker,port)
-        return client
+       def on_connect(client,userdata,flags,rc):
+          if rc==0:
+            print("Connected to MQTT BROKER")
+          else:
+             print("Failed to connect %d",rc)
+    
+       client=mqtt_client.Client(client_id)
+       client.username_pw_set(username,password)
+       client.on_connect = on_connect
+       client.connect(broker,port)
+        
+       return  serv_pb2.conRes(response='Ca va %s ' % request.adr)
 
 
     def publish(client):
@@ -74,8 +77,9 @@ def serve():
 
 if __name__ == '__main__':
     logging.basicConfig()
+    print('Server is running ')
+    client=ServServs.connect_mqtt()
     serve()
-    client=connect_mqtt()
     if (c==3):
       subscribe(client)
     elif (c==2):

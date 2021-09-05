@@ -16,7 +16,7 @@
 from __future__ import print_function
 
 import logging
-
+import time
 import grpc
 import serv_pb2
 import serv_pb2_grpc
@@ -26,11 +26,24 @@ def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    print("hello")
+    print("Hello ")
     with grpc.insecure_channel('localhost:50051') as channel:
        stub = serv_pb2_grpc.MqttservicesStub(channel)
-       response = stub.connect(serv_pb2.conInfo(adr='localhost:50051'))
+       clt= stub.connect(serv_pb2.conInfo(adr=15))
+       
        print("client request sent! " )
+       
+       pub = stub.publish(clt)
+       
+       print("client published" )
+       sub = stub.subscribe(serv_pb2.subInfo(adr=15))
+      
+
+       print("client subscribed")
+       dis = stub.disconnect(serv_pb2.disInfo(adr=15))
+      
+    
+       print("client disconnected")
        
 if __name__ == '__main__':
   logging.basicConfig()
